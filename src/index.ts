@@ -4,12 +4,13 @@ import bodyParser from 'body-parser'
 
 const app = express()
 
-const port = /*process.evn.PORT || */ 5000
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+const port = process.evn.PORT || 5000
 
 const parserMiddleware = bodyParser({})
 app.use(parserMiddleware)
 
 app.use('/videos', videosRouter)
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+})
