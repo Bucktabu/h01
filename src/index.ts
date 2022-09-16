@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 
 const app = express()
 
-const port = /*process.evn.PORT || ??? */ 5000
+const port = process.evn.PORT || 5000
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
