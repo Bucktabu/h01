@@ -97,7 +97,7 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
     const video = videos.find(v => v.id === +req.params.id)
 
     if (video) {
-        res.status(204)
+        res.status(200)
         return res.send(video)
     } else {
         res.sendStatus(404)
@@ -155,20 +155,12 @@ videosRouter.delete('/', (req: Request, res: Response) => {
 })
 // delete id ??? закоменченный код не работает, а второй удаляет, но если после удаления запрашивать видео, оказывается оно не удалено и можно его уповторно удалять до бесконечности
 videosRouter.delete('/:id', (req: Request, res: Response) => {
-    // const newVideos = videos.filter(v => v.id !== +req.params.id)
-    // if (newVideos.length < videos.length) {
-    //     return videos = newVideos
-    //     res.sendStatus(204)
-    // } else {
-    //     res.sendStatus(404)
-    // }
-    for (let i = 0, l = videos.length; i < l; i++) {
-        if (videos[i].id === +req.params.id) {
-            videos.slice(i, 1)
-            res.sendStatus(204)
-            return
-        }
+    const newVideos = videos.filter(v => v.id !== +req.params.id)
+    if (newVideos.length < videos.length) {
+        videos = newVideos
+        res.sendStatus(204)
+        return
+    } else {
+        res.sendStatus(404)
     }
-
-    res.sendStatus(404)
 })
