@@ -1,5 +1,18 @@
 import {Request, Response, Router} from "express";
 
+// enum Resolutions = {p144 = 'P144', p240 = 'P240', p360 = 'P360', p480 = 'P480', p720 = 'P720', p1080 = 'P1080', p1440 = 'P1440', p2160 = 'P2160'}
+//
+// type VideoDBType = {
+//     id: number,
+//     title: string
+//     author: string,
+//     canBeDownloaded: boolean,
+//     minAgeRestriction: number | null,
+//     createdAt: string,
+//     publicationDate: string,
+//     availableResolutions: Resolutions
+// }
+
 let videos = [
     {
         id: 1,
@@ -34,62 +47,65 @@ let videos = [
 ]
 
 export const videosRouter = Router({})
-
+// post +++
 videosRouter.post('/', (req: Request, res: Response) => {
     let title = req.body.title
     let author = req.body.author
 
     let error = false
-    let textError
+    let textError = []
     if (!title || typeof title !== 'string' || !title.trim() || title.length >= 40) {
         error = true
-        textError = title
-    } else if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
+        textError.push('title')
+    }
+    if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
         error = true
-        textError = author
+        textError.push('author')
     }
 
     if (error) {
-        res.status(400).send({
+         res.status(400).send({
             errorsMessages: [{
                 message: `Incorrect ${textError}`,
                 field: `${textError}`
             }]
         })
+
+        return
     }
 
     const newVideo = {
         id: +(new Date()),
         title: req.body.title,
         author: req.body.author,
-        canBeDownloaded: true,
-        minAgeRestriction: null,
+        canBeDownloaded: false,
+        minAgeRestriction: Math.floor(Math.random() * 17 + 1),
         createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        publicationDate: new Date(+new Date() + 86400000).toISOString(),
         availableResolutions: req.body.availableResolutions
     }
-    //videos.push(newVideo) ???
+    videos.push(newVideo)
 
     res.status(201).send(newVideo)
 }) // Create new video
-
+// get +++
 videosRouter.get('/', (req: Request, res: Response) => {
     res.status(200).send(videos)
 }) // Return all video
-
+// get id ---
 videosRouter.get('/:id', (req: Request, res: Response) => {
-    const id = + req.params.id
-    const video = videos.find(v => v.id === id)
+    const video = videos.find(v => v.id === +req.params.id)
 
     if (video) {
-        res.status(204).send(video)
+        res.status(204)
+        return res.send(video)
     } else {
-        res.status(404)
+        res.sendStatus(404)
     }
 }) // Return video by id
-
+// put ---
 videosRouter.put('/:id', (req: Request, res: Response) => {
-    const id = + req.params.id
+    const id = +req.params.id
     const video = videos.find(v => v.id === id)
 
     let title = req.body.title
@@ -115,14 +131,16 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
                 field: `${textError}`
             }]
         })
+
+        return
     }
 
     if (video) {
         video.title = req.body.title;
         video.author = req.body.author
-        res.status(204).send(video)
+        return res.status(204).send(video)
     } else {
-        res.status(404)
+        return res.sendStatus(404)
     }
 }) // Update existing video by id with InputModel
 
@@ -130,19 +148,27 @@ videosRouter.delete('/', (req: Request, res: Response) => {
     const newVideos = videos.slice(0, videos.length)
     if (newVideos.length === 0) {
         videos = newVideos
-        res.status(204)
+        res.sendStatus(204)
     } else {
-        res.status(404)
+        res.sendStatus(404)
     }
 })
-
+// delete id ??? закоменченный код не работает, а второй удаляет, но если после удаления запрашивать видео, оказывается оно не удалено и можно его уповторно удалять до бесконечности
 videosRouter.delete('/:id', (req: Request, res: Response) => {
-    const id = + req.params.id
-    const newVideos = videos.filter(v => v.id !== id)
-    if (newVideos.length < videos.length) {
-        videos = newVideos
-        res.status(204)
-    } else {
-        res.status(404)
+    // const newVideos = videos.filter(v => v.id !== +req.params.id)
+    // if (newVideos.length < videos.length) {
+    //     return videos = newVideos
+    //     res.sendStatus(204)
+    // } else {
+    //     res.sendStatus(404)
+    // }
+    for (let i = 0, l = videos.length; i < l; i++) {
+        if (videos[i].id === +req.params.id) {
+            videos.slice(i, 1)
+            res.sendStatus(204)
+            return
+        }
     }
+
+    res.sendStatus(404)
 })
