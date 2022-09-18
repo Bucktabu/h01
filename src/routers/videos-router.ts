@@ -143,17 +143,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
         return res.sendStatus(404)
     }
 }) // Update existing video by id with InputModel
-
-videosRouter.delete('/', (req: Request, res: Response) => {
-    const newVideos = videos.slice(0, videos.length)
-    if (newVideos.length === 0) {
-        videos = newVideos
-        res.sendStatus(204)
-    } else {
-        res.sendStatus(404)
-    }
-})
-// delete id ??? закоменченный код не работает, а второй удаляет, но если после удаления запрашивать видео, оказывается оно не удалено и можно его уповторно удалять до бесконечности
+// delete id +++
 videosRouter.delete('/:id', (req: Request, res: Response) => {
     const newVideos = videos.filter(v => v.id !== +req.params.id)
     if (newVideos.length < videos.length) {
