@@ -80,8 +80,8 @@ videosRouter.post('/', (req: Request, res: Response) => {
         author: req.body.author,
         canBeDownloaded: false,
         minAgeRestriction: Math.floor(Math.random() * 17 + 1),
-        createdAt: new Date(+new Date() + 97200000).toISOString(),
-        publicationDate: new Date(+new Date() + 97200000).toISOString(),
+        createdAt: new Date(+new Date() + 97200 * 1000).toISOString(),
+        publicationDate: new Date(+new Date() + 194400 * 1000).toISOString(),
         availableResolutions: req.body.availableResolutions
     }
     videos.push(newVideo)
@@ -97,8 +97,8 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
     const video = videos.find(v => v.id === +req.params.id)
 
     if (video) {
-        res.status(200)
-        return res.send(video)
+        res.status(200).send(video)
+        return
     } else {
         res.sendStatus(404)
     }
