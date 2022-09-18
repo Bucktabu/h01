@@ -81,7 +81,7 @@ videosRouter.post('/', (req: Request, res: Response) => {
         canBeDownloaded: false,
         minAgeRestriction: Math.floor(Math.random() * 17 + 1),
         createdAt: new Date(+new Date() + 97200 * 1000).toISOString(),
-        publicationDate: new Date(+new Date() + 18200 * 1000).toISOString(),
+        publicationDate: new Date(+new Date() + 10800 * 1000).toISOString(),
         availableResolutions: req.body.availableResolutions
     }
     videos.push(newVideo)
