@@ -65,6 +65,8 @@ videosRouter.post('/', (req: Request, res: Response) => {
         textError.push('author')
     }
 
+
+
     if (error) {
          res.status(400).send({
             errorsMessages: [{
@@ -105,7 +107,7 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
         res.sendStatus(404)
     }
 }) // Return video by id
-// put ---
+// put +++
 videosRouter.put('/:id', (req: Request, res: Response) => {
     const id = +req.params.id
     const video = videos.find(v => v.id === id)
@@ -140,6 +142,9 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     if (video) {
         video.title = req.body.title;
         video.author = req.body.author
+        video.canBeDownloaded = req.body.canBeDownloaded
+        video.canBeDownloaded = req.body.canBeDownloaded
+        video.publicationDate = req.body.publicationDate
         return res.status(204).send(video)
     } else {
         return res.sendStatus(404)
