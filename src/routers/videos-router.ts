@@ -129,25 +129,25 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     }
 
 
-    // if (error) {
-    //     res.status(400).send({
-    //         errorsMessages: [{
-    //             message: `Incorrect ${textError}`,
-    //             field: `${textError}`
-    //         }]
-    //     })
-    // }
-
-    let errorMessages = []
-    if(error) {
-        for (let i = 0, l = textError.length; i < l; i++) {
-            errorMessages.push({
-                message: `Incorrect ${textError[i]}`,
-                field: `${textError[i]}`
-            })
-        }
+    if (error) {
+        res.status(400).send({
+            errorsMessages: [{
+                message: `Incorrect ${textError}`,
+                field: `${textError}`
+            }]
+        })
     }
-    res.status(400).send(errorMessages)
+
+    // let errorMessages = []
+    // if(error) {
+    //     for (let i = 0, l = textError.length; i < l; i++) {
+    //         errorMessages.push({
+    //             message: `Incorrect ${textError[i]}`,
+    //             field: `${textError[i]}`
+    //         })
+    //     }
+    // }
+    // res.status(400).send(errorMessages)
 
     if (video) {
         video.title = req.body.title;
