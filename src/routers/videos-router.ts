@@ -144,6 +144,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
         video.author = req.body.author
         video.canBeDownloaded = req.body.canBeDownloaded
         video.canBeDownloaded = req.body.canBeDownloaded
+        video.minAgeRestriction = req.body.minAgeRestriction
         video.publicationDate = req.body.publicationDate
         return res.status(204).send(video)
     } else {
