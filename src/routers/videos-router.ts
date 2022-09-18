@@ -116,28 +116,38 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     let author = req.body.author
 
     let error = false
-    let textError
+    let textError = []
     if (!title || typeof title !== 'string' || !title.trim() || title.length>= 40) {
         error = true
-        textError = 'title'
+        textError.push('title')
     } else if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
         error = true
-        textError = 'author'
+        textError.push('author')
     } else if (req.body.minAgeRestriction < 1 || req.body.minAgeRestriction > 18) {
         error = true
-        textError = 'minAgeRestriction'
+        textError.push('minAgeRestriction')
     }
 
-    if (error) {
-        res.status(400).send({
-            errorsMessages: [{
-                message: `Incorrect ${textError}`,
-                field: `${textError}`
-            }]
-        })
 
-        return
+    // if (error) {
+    //     res.status(400).send({
+    //         errorsMessages: [{
+    //             message: `Incorrect ${textError}`,
+    //             field: `${textError}`
+    //         }]
+    //     })
+    // }
+
+    let errorMessages = []
+    if(error) {
+        for (let i = 0, l = textError.length; i < l; i++) {
+            errorMessages.push({
+                message: `Incorrect ${textError[i]}`,
+                field: `${textError[i]}`
+            })
+        }
     }
+    res.status(400).send(errorMessages)
 
     if (video) {
         video.title = req.body.title;
