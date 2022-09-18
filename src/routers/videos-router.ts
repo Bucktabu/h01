@@ -1,50 +1,52 @@
 import {Request, Response, Router} from "express";
 
-// enum Resolutions = {p144 = 'P144', p240 = 'P240', p360 = 'P360', p480 = 'P480', p720 = 'P720', p1080 = 'P1080', p1440 = 'P1440', p2160 = 'P2160'}
-//
-// type VideoDBType = {
-//     id: number,
-//     title: string
-//     author: string,
-//     canBeDownloaded: boolean,
-//     minAgeRestriction: number | null,
-//     createdAt: string,
-//     publicationDate: string,
-//     availableResolutions: Resolutions
-// }
+enum Resolutions {p144 = 'P144', p240 = 'P240', p360 = 'P360', p480 = 'P480', p720 = 'P720', p1080 = 'P1080', p1440 = 'P1440', p2160 = 'P2160'}
 
-let videos = [
-    {
-        id: 1,
-        title: '01 - Simple express app with typescript and nodemon',
-        author: 'IT-Incubator',
-        canBeDownloaded: true,
-        minAgeRestriction: 1,
-        createdAt: "2022-09-15T12:40:55.951Z",
-        publicationDate: "2022-09-15T12:40:55.951Z",
-        availableResolutions: "P144"
-    },
-    {
-        id: 2,
-        title: '02 - Deploy to Heroku for simple TS Express App',
-        author: 'IT-Incubator',
-        canBeDownloaded: true,
-        minAgeRestriction: 1,
-        createdAt: "2022-09-15T12:40:55.951Z",
-        publicationDate: "2022-09-15T12:40:55.951Z",
-        availableResolutions: "P144"
-    },
-    {
-        id: 3,
-        title: '03 - Deploy to Heroku via CLI',
-        author: 'IT-Incubator',
-        canBeDownloaded: true,
-        minAgeRestriction: 1,
-        createdAt: "2022-09-15T12:40:55.951Z",
-        publicationDate: "2022-09-15T12:40:55.951Z",
-        availableResolutions: "P144"
-    }
-]
+type VideoDBType = {
+    id: number,
+    title: string
+    author: string,
+    canBeDownloaded: boolean,
+    minAgeRestriction: number | null,
+    createdAt: string,
+    publicationDate: string,
+    availableResolutions: Resolutions
+} []
+
+// let videos = [
+//     {
+//         id: 1,
+//         title: '01 - Simple express app with typescript and nodemon',
+//         author: 'IT-Incubator',
+//         canBeDownloaded: true,
+//         minAgeRestriction: 1,
+//         createdAt: "2022-09-15T12:40:55.951Z",
+//         publicationDate: "2022-09-15T12:40:55.951Z",
+//         availableResolutions: "P144"
+//     },
+//     {
+//         id: 2,
+//         title: '02 - Deploy to Heroku for simple TS Express App',
+//         author: 'IT-Incubator',
+//         canBeDownloaded: true,
+//         minAgeRestriction: 1,
+//         createdAt: "2022-09-15T12:40:55.951Z",
+//         publicationDate: "2022-09-15T12:40:55.951Z",
+//         availableResolutions: "P144"
+//     },
+//     {
+//         id: 3,
+//         title: '03 - Deploy to Heroku via CLI',
+//         author: 'IT-Incubator',
+//         canBeDownloaded: true,
+//         minAgeRestriction: 1,
+//         createdAt: "2022-09-15T12:40:55.951Z",
+//         publicationDate: "2022-09-15T12:40:55.951Z",
+//         availableResolutions: "P144"
+//     }
+// ]
+
+let videos: VideoDBType = []
 
 export const videosRouter = Router({})
 // post +++
@@ -79,7 +81,7 @@ videosRouter.post('/', (req: Request, res: Response) => {
         title: req.body.title,
         author: req.body.author,
         canBeDownloaded: false,
-        minAgeRestriction: Math.floor(Math.random() * 17 + 1),
+        minAgeRestriction: null, //Math.floor(Math.random() * 17 + 1),
         createdAt: new Date(+new Date() + 97200 * 1000).toISOString(),
         publicationDate: new Date(+new Date() + 183600 * 1000).toISOString(),
         availableResolutions: req.body.availableResolutions
