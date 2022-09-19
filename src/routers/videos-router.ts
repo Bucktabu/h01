@@ -63,12 +63,12 @@ videosRouter.post('/', (req: Request, res: Response) => {
         error = true
         textError.push('author')
     }
-    for (let i = 0, l = availableResolutions.length; i < l; i++) {
-        if (availableResolutions[i] !== 'P144' || availableResolutions[i] !== 'P240' || availableResolutions[i] !== 'P360' || availableResolutions[i] !== 'P480' || availableResolutions[i] !== 'P720' || availableResolutions[i] !== 'P1080' || availableResolutions[i] !== 'P1440' || availableResolutions[i] !== 'P2160') {
-            error = true
-            textError.push('availableResolutions')
-        }
-    }
+    // for (let i = 0, l = availableResolutions.length; i < l; i++) {
+    //     if (availableResolutions[i] !== 'P144' || availableResolutions[i] !== 'P240' || availableResolutions[i] !== 'P360' || availableResolutions[i] !== 'P480' || availableResolutions[i] !== 'P720' || availableResolutions[i] !== 'P1080' || availableResolutions[i] !== 'P1440' || availableResolutions[i] !== 'P2160') {
+    //         error = true
+    //         textError.push('availableResolutions')
+    //     }
+    // }
 
     let errorsMessage = []
     if (error) {
