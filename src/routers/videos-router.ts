@@ -1,4 +1,5 @@
 import {Request, Response, Router} from "express";
+export const videosRouter = Router({})
 
 enum Resolutions {p144 = 'P144', p240 = 'P240', p360 = 'P360', p480 = 'P480', p720 = 'P720', p1080 = 'P1080', p1440 = 'P1440', p2160 = 'P2160'}
 
@@ -12,6 +13,7 @@ type VideoDBType = {
     publicationDate: string,
     availableResolutions: Resolutions
 } []
+let videos: VideoDBType = []
 
 // let videos = [
 //     {
@@ -46,10 +48,6 @@ type VideoDBType = {
 //     }
 // ]
 
-let videos: VideoDBType = []
-
-export const videosRouter = Router({})
-// post +++
 videosRouter.post('/', (req: Request, res: Response) => {
     let title = req.body.title
     let author = req.body.author
@@ -64,8 +62,6 @@ videosRouter.post('/', (req: Request, res: Response) => {
         error = true
         textError.push('author')
     }
-
-
 
     if (error) {
          res.status(400).send({
@@ -92,11 +88,11 @@ videosRouter.post('/', (req: Request, res: Response) => {
 
     res.status(201).send(newVideo)
 }) // Create new video
-// get +++
+
 videosRouter.get('/', (req: Request, res: Response) => {
     res.status(200).send(videos)
 }) // Return all video
-// get id ---
+
 videosRouter.get('/:id', (req: Request, res: Response) => {
     const video = videos.find(v => v.id === +req.params.id)
 
@@ -107,7 +103,7 @@ videosRouter.get('/:id', (req: Request, res: Response) => {
         res.sendStatus(404)
     }
 }) // Return video by id
-// put +++
+
 videosRouter.put('/:id', (req: Request, res: Response) => {
     const id = +req.params.id
     const video = videos.find(v => v.id === id)
@@ -120,34 +116,30 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     if (!title || typeof title !== 'string' || !title.trim() || title.length>= 40) {
         error = true
         textError.push('title')
-    } else if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
+    }
+    if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
         error = true
         textError.push('author')
-    } else if (req.body.minAgeRestriction < 1 || req.body.minAgeRestriction > 18) {
+    }
+    if (typeof req.body.canBeDownloaded !== 'boolean') {
+        error = true
+        textError.push('canBeDownloaded')
+    }
+    if (req.body.minAgeRestriction < 1 || req.body.minAgeRestriction > 18) {
         error = true
         textError.push('minAgeRestriction')
     }
 
-
+    let errorsMessage = []
     if (error) {
-        res.status(400).send({
-            errorsMessages: [{
-                message: `Incorrect ${textError}`,
-                field: `${textError}`
-            }]
-        })
+        for (let i = 0, l = textError.length; i < l; i++) {
+            errorsMessage.push({
+                message: `Incorrect ${textError[i]}`,
+                field: `${textError[i]}`
+            })
+        }
+        res.status(400).send({errorsMessages: errorsMessage})
     }
-
-    // let errorMessages = []
-    // if(error) {
-    //     for (let i = 0, l = textError.length; i < l; i++) {
-    //         errorMessages.push({
-    //             message: `Incorrect ${textError[i]}`,
-    //             field: `${textError[i]}`
-    //         })
-    //     }
-    // }
-    // res.status(400).send(errorMessages)
 
     if (video) {
         video.title = req.body.title;
@@ -161,7 +153,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
         return res.sendStatus(404)
     }
 }) // Update existing video by id with InputModel
-// delete id +++
+
 videosRouter.delete('/:id', (req: Request, res: Response) => {
     const newVideos = videos.filter(v => v.id !== +req.params.id)
     if (newVideos.length < videos.length) {
