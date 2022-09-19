@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 export const videosRouter = Router({})
 
-enum Resolutions {p144 = 'P144', p240 = 'P240', p360 = 'P360', p480 = 'P480', p720 = 'P720', p1080 = 'P1080', p1440 = 'P1440', p2160 = 'P2160'}
+enum Resolutions {P144 = 'P144', P240 = 'P240', P360 = 'P360', P480 = 'P480', P720 = 'P720', P1080 = 'P1080', P1440 = 'P1440', P2160 = 'P2160'}
 
 type VideoDBType = {
     id: number,
@@ -51,6 +51,7 @@ let videos: VideoDBType = []
 videosRouter.post('/', (req: Request, res: Response) => {
     let title = req.body.title
     let author = req.body.author
+    let availableResolutions = req.body.availableResolutions
 
     let error = false
     let textError = []
@@ -61,6 +62,12 @@ videosRouter.post('/', (req: Request, res: Response) => {
     if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
         error = true
         textError.push('author')
+    }
+    for (let i = 0, l = availableResolutions.length; i < l; i++) {
+        if (availableResolutions[i] !== 'P144' || availableResolutions[i] !== 'P240' || availableResolutions[i] !== 'P360' || availableResolutions[i] !== 'P480' || availableResolutions[i] !== 'P720' || availableResolutions[i] !== 'P1080' || availableResolutions[i] !== 'P1440' || availableResolutions[i] !== 'P2160') {
+            error = true
+            textError.push('availableResolutions')
+        }
     }
 
     let errorsMessage = []
@@ -110,6 +117,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
     let title = req.body.title
     let author = req.body.author
+    let publicationDate = req.body.publicationDate
 
     let error = false
     let textError = []
@@ -128,6 +136,10 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     if (req.body.minAgeRestriction < 1 || req.body.minAgeRestriction > 18) {
         error = true
         textError.push('minAgeRestriction')
+    }
+    if (publicationDate[publicationDate.length - 1] !== 'Z') {
+        error = true
+        textError.push('publicationDate')
     }
 
     let errorsMessage = []
