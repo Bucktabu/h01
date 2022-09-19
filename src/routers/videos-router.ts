@@ -123,11 +123,11 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
     let error = false
     let textError = []
-    if (!title || typeof title !== 'string' || !title.trim() || title.length>= 40) {
+    if (typeof title !== 'string' || !title.trim() || title.length >= 40) {
         error = true
         textError.push('title')
     }
-    if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
+    if (typeof author !== 'string' || !author.trim() || author.length >= 20) {
         error = true
         textError.push('author')
     }
@@ -169,6 +169,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
         video.canBeDownloaded = req.body.canBeDownloaded
         video.minAgeRestriction = req.body.minAgeRestriction
         video.publicationDate = req.body.publicationDate
+        video.availableResolutions = req.body.availableResolutions
         return res.status(204).send(video)
     } else {
         return res.sendStatus(404)
