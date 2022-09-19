@@ -15,39 +15,6 @@ type VideoDBType = {
 } []
 let videos: VideoDBType = []
 
-// let videos = [
-//     {
-//         id: 1,
-//         title: '01 - Simple express app with typescript and nodemon',
-//         author: 'IT-Incubator',
-//         canBeDownloaded: true,
-//         minAgeRestriction: 1,
-//         createdAt: "2022-09-15T12:40:55.951Z",
-//         publicationDate: "2022-09-15T12:40:55.951Z",
-//         availableResolutions: "P144"
-//     },
-//     {
-//         id: 2,
-//         title: '02 - Deploy to Heroku for simple TS Express App',
-//         author: 'IT-Incubator',
-//         canBeDownloaded: true,
-//         minAgeRestriction: 1,
-//         createdAt: "2022-09-15T12:40:55.951Z",
-//         publicationDate: "2022-09-15T12:40:55.951Z",
-//         availableResolutions: "P144"
-//     },
-//     {
-//         id: 3,
-//         title: '03 - Deploy to Heroku via CLI',
-//         author: 'IT-Incubator',
-//         canBeDownloaded: true,
-//         minAgeRestriction: 1,
-//         createdAt: "2022-09-15T12:40:55.951Z",
-//         publicationDate: "2022-09-15T12:40:55.951Z",
-//         availableResolutions: "P144"
-//     }
-// ]
-
 videosRouter.post('/', (req: Request, res: Response) => {
     let title = req.body.title
     let author = req.body.author
