@@ -63,15 +63,15 @@ videosRouter.post('/', (req: Request, res: Response) => {
         textError.push('author')
     }
 
+    let errorsMessage = []
     if (error) {
-         res.status(400).send({
-            errorsMessages: [{
-                message: `Incorrect ${textError}`,
-                field: `${textError}`
-            }]
-        })
-
-        return
+        for (let i = 0, l = textError.length; i < l; i++) {
+            errorsMessage.push({
+                message: `Incorrect ${textError[i]}`,
+                field: `${textError[i]}`
+            })
+        }
+        res.status(400).send({errorsMessages: errorsMessage})
     }
 
     const newVideo = {
