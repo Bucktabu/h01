@@ -55,20 +55,21 @@ videosRouter.post('/', (req: Request, res: Response) => {
 
     let error = false
     let textError = []
-    if (!title || typeof title !== 'string' || !title.trim() || title.length >= 40) {
+    if (typeof title !== 'string' || !title.trim() || title.length >= 40) {
         error = true
         textError.push('title')
     }
-    if (!author || typeof author !== 'string' || !author.trim() || author.length >= 20) {
+    if (typeof author !== 'string' || !author.trim() || author.length >= 20) {
         error = true
         textError.push('author')
     }
-    // for (let i = 0, l = availableResolutions.length; i < l; i++) {
-    //     if (availableResolutions[i] !== 'P144' || availableResolutions[i] !== 'P240' || availableResolutions[i] !== 'P360' || availableResolutions[i] !== 'P480' || availableResolutions[i] !== 'P720' || availableResolutions[i] !== 'P1080' || availableResolutions[i] !== 'P1440' || availableResolutions[i] !== 'P2160') {
-    //         error = true
-    //         textError.push('availableResolutions')
-    //     }
-    // }
+    for (let i = 0, l = availableResolutions.length; i < l; i++) {
+        const resolutionArray = Object.values(Resolutions)
+        if (!resolutionArray.includes(availableResolutions[i])) {
+            error = true
+            textError.push('availableResolutions')
+        }
+    }
 
     let errorsMessage = []
     if (error) {
@@ -118,6 +119,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     let title = req.body.title
     let author = req.body.author
     let publicationDate = req.body.publicationDate
+    let availableResolutions = req.body.availableResolutions
 
     let error = false
     let textError = []
@@ -140,6 +142,13 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
     if (publicationDate[publicationDate.length - 1] !== 'Z') {
         error = true
         textError.push('publicationDate')
+    }
+    for (let i = 0, l = availableResolutions.length; i < l; i++) {
+        const resolutionArray = Object.values(Resolutions)
+        if (!resolutionArray.includes(availableResolutions[i])) {
+            error = true
+            textError.push('availableResolutions')
+        }
     }
 
     let errorsMessage = []
